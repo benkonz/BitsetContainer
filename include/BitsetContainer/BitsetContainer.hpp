@@ -1,77 +1,134 @@
 #ifndef BITSETCONTAINER_LIBRARY_H
 #define BITSETCONTAINER_LIBRARY_H
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <bitset>
-#include <memory>
-#include <iostream>
 
 template<size_t N>
-class BitsetIterator : public boost::iterator_facade<
-    BitsetIterator<N>, bool, boost::random_access_traversal_tag> {
-
+class Iterator : public std::iterator<std::random_access_iterator_tag, bool> {
  public:
-  unsigned int index;
-  std::bitset<N> bitset;
+  using difference_type = typename std::iterator<std::random_access_iterator_tag, bool>::difference_type;
 
-  BitsetIterator(const std::bitset<N> &bitset, unsigned int index)
-      : bitset(bitset), index(index), value(new bool(bitset[index])) {
+  Iterator() : bitset(), offset(0) {
 
   }
 
-  ~BitsetIterator() {
-    delete value;
+  explicit Iterator(const std::bitset<N> &bitset, int offset = 0) : bitset(bitset), offset(offset) {
+
+  }
+
+  Iterator &operator+=(const int &offset) {
+    advance(offset);
+    return *this;
+  }
+
+  Iterator &operator-=(const int &offset) {
+    advance(-offset);
+    return *this;
+  }
+
+  bool &operator*() {
+    value = bitset[offset];
+    return value;
+  }
+
+  bool *operator->() {
+    value = bitset[offset];
+    return &value;
+  }
+
+  bool &operator[](const int &offset) {
+    value = bitset[this->offset + offset];
+    return value;
+  }
+
+  Iterator &operator++() {
+    advance(1);
+    return *this;
+  }
+
+  Iterator &operator--() {
+    advance(-1);
+    return *this;
+  }
+
+  Iterator operator++(int) {
+    Iterator tmp(*this);
+    advance(1);
+    return tmp;
+  }
+
+  Iterator operator--(int) {
+    Iterator tmp(*this);
+    advance(-1);
+    return tmp;
+  }
+
+  Iterator operator-(const Iterator &iterator) const {
+    return Iterator(bitset, offset - iterator.offset);
+  }
+
+  Iterator operator+(const Iterator &iterator) const {
+    return Iterator(bitset, offset + iterator.offset);
+  }
+
+  bool operator==(const Iterator &iterator) const {
+    return offset == iterator.offset;
+  }
+
+  bool operator!=(const Iterator &iterator) const {
+    return offset != iterator.offset;
+  }
+
+  bool operator>(const Iterator &iterator) const {
+    return offset > iterator.offset;
+  }
+
+  bool operator<(const Iterator &iterator) const {
+    return offset < iterator.offset;
+  }
+
+  bool operator>=(const Iterator &iterator) const {
+    return offset >= iterator.offset;
+  }
+
+  bool operator<=(const Iterator &iterator) const {
+    return offset <= iterator.offset;
   }
 
  private:
-  bool *value;
-  friend class boost::iterator_core_access;
-
-  void increment() {
-    advance(1);
-  };
-
-  void decrement() {
-    advance(-1);
-  };
-
-  void advance(int n) {
-    index += n;
-    *value = bitset[index];
-  };
-
-  bool equal(const BitsetIterator<N> &other) const {
-    return this->index == other.index;
-  };
-
-  bool &dereference() const {
-    return *value;
+  void advance(int offset) {
+    this->offset += offset;
   }
 
-  std::ptrdiff_t distance_to(const BitsetIterator<N> &other) const {
-    return other.index - this->index;
-  }
-
+ protected:
+  int offset;
+  bool value;
+  const std::bitset<N> &bitset;
 };
 
 template<size_t N>
 class BitsetContainer : public std::bitset<N> {
  public:
-  typedef BitsetIterator<N> iterator;
-//  typedef std::reverse_iterator<iterator> reverse_iterator;
+
+  BitsetContainer() : std::bitset<N>() {
+
+  }
 
   explicit BitsetContainer(unsigned long long val) : std::bitset<N>(val) {
 
   }
 
-  iterator begin() {
-    return iterator(*this, 0);
+  explicit BitsetContainer(std::string string) : std::bitset<N>(string) {
+
   }
 
-  iterator end() {
-    return iterator(*this, static_cast<unsigned int>(N));
+  Iterator<N> begin() {
+    return Iterator<N>(*this, 0);
   }
 
+  Iterator<N> end() {
+    return Iterator<N>(*this, N);
+  }
 };
 
 #endif

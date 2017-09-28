@@ -5,9 +5,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 include(GNUInstallDirs)
 
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-
 set(SOURCE_FILES include/library.h)
 include_directories(include/)
 

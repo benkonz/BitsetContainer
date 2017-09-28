@@ -1,8 +1,9 @@
 #include <BitsetContainer/BitsetContainer.hpp>
 #include <gtest/gtest.h>
+#include <numeric>
 
-TEST(BitsetContainerTest, BasicConstruct) {
-  const int bits = 0b00110011;
+TEST(BitsetContainerTest, basicConstruct) {
+  const int bits = 0b11111111;
   BitsetContainer<8> bitsetContainer(bits);
   std::bitset<8> bitset(bits);
 
@@ -13,13 +14,22 @@ TEST(BitsetContainerTest, BasicConstruct) {
   }
 }
 
-TEST(BitsetContainerTest, BasicCopy) {
-  BitsetContainer<8> bitsetContainer(0b00110011);
-  std::vector<bool> bucket(8);
+TEST(BitsetContainerTest, inputIteratorTest) {
+  BitsetContainer<8> bitsetContainer(0b11111111);
 
-  std::copy(bitsetContainer.begin(), bitsetContainer.end(), bucket.begin());
+  int sum = std::accumulate(bitsetContainer.begin(), bitsetContainer.end(), 0);
+  int product = std::accumulate(bitsetContainer.begin(), bitsetContainer.end(), 1, std::multiplies<>());
 
-  for(auto i = 0; i < bitsetContainer.size(); i++) {
-    EXPECT_EQ(bitsetContainer[i], bucket[i]);
-  }
+  ASSERT_EQ(sum, 8);
+  ASSERT_EQ(product, 1);
+}
+
+TEST(BitsetContainerTest, forwardIteratorTest) {
+  BitsetContainer<8> bitsetContainer(0b00111100);
+
+  auto num1s = std::count(bitsetContainer.begin(), bitsetContainer.end(), 1);
+  auto num0s = std::count(bitsetContainer.begin(), bitsetContainer.end(), 0);
+
+  ASSERT_EQ(num0s, 4);
+  ASSERT_EQ(num1s, 4);
 }
