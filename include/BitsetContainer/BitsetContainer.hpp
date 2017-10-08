@@ -2,21 +2,40 @@
 #define BITSETCONTAINER_LIBRARY_H
 
 #include <bitset>
+#include <iostream>
 
 template<size_t N>
-class Iterator : public std::iterator<std::random_access_iterator_tag, bool> {
+class Iterator {
  public:
-  using difference_type = typename std::iterator<std::random_access_iterator_tag, bool>::difference_type;
 
-  Iterator() : bitset(), offset(0) {
+  using difference_type = std::ptrdiff_t;
+  using value_type = bool;
+  using reference = typename std::bitset<N>::reference &;
+  using pointer = typename std::bitset<N>::reference *;
+  using iterator_category = std::random_access_iterator_tag;
+
+  explicit Iterator(std::bitset<N> &bitset, int offset = 0)
+      : bitset(bitset),
+        offset(offset),
+        current(new typename std::bitset<N>::reference(bitset[offset])),
+        array(new typename std::bitset<N>::reference(bitset[offset])) {
 
   }
 
-  explicit Iterator(const std::bitset<N> &bitset, int offset = 0) : bitset(bitset), offset(offset) {
-
+  Iterator &operator=(const Iterator &iterator) {
+    bitset = iterator.bitset;
+    offset = iterator.offset;
+    current = iterator.current;
+    array = iterator.array;
+    return *this;
   }
 
-  Iterator &operator+=(const int &offset) {
+  ~Iterator() {
+//    delete current;
+//    delete array;
+  }
+
+  Iterator &operator+=(difference_type offset) {
     advance(offset);
     return *this;
   }
@@ -26,22 +45,21 @@ class Iterator : public std::iterator<std::random_access_iterator_tag, bool> {
     return *this;
   }
 
-  bool &operator*() {
-    value = bitset[offset];
-    return value;
+  reference operator*() const {
+    return *current;
   }
 
-  bool *operator->() {
-    value = bitset[offset];
-    return &value;
+  pointer operator->() const {
+    return current;
   }
 
-  bool &operator[](const int &offset) {
-    value = bitset[this->offset + offset];
-    return value;
+  reference operator[](difference_type offset) {
+//    delete array;
+    array = new typename std::bitset<N>::reference(bitset[this->offset + offset]);
+    return *array;
   }
 
-  Iterator &operator++() {
+  Iterator<8> &operator++() {
     advance(1);
     return *this;
   }
@@ -52,7 +70,7 @@ class Iterator : public std::iterator<std::random_access_iterator_tag, bool> {
   }
 
   Iterator operator++(int) {
-    Iterator tmp(*this);
+    Iterator tmp = *this;
     advance(1);
     return tmp;
   }
@@ -63,12 +81,16 @@ class Iterator : public std::iterator<std::random_access_iterator_tag, bool> {
     return tmp;
   }
 
-  Iterator operator-(const Iterator &iterator) const {
-    return Iterator(bitset, offset - iterator.offset);
+  difference_type operator-(const Iterator &iterator) const {
+    return offset - iterator.offset;
   }
 
-  Iterator operator+(const Iterator &iterator) const {
-    return Iterator(bitset, offset + iterator.offset);
+  Iterator operator-(const difference_type offset) const {
+    return Iterator(bitset, this->offset - offset);
+  }
+
+  Iterator operator+(difference_type offset) const {
+    return Iterator(bitset, this->offset + offset);
   }
 
   bool operator==(const Iterator &iterator) const {
@@ -80,30 +102,33 @@ class Iterator : public std::iterator<std::random_access_iterator_tag, bool> {
   }
 
   bool operator>(const Iterator &iterator) const {
-    return offset > iterator.offset;
+    return *current > *iterator.current;
   }
 
   bool operator<(const Iterator &iterator) const {
-    return offset < iterator.offset;
+    return *current < *iterator.current;
   }
 
   bool operator>=(const Iterator &iterator) const {
-    return offset >= iterator.offset;
+    return *current >= *iterator.current;
   }
 
   bool operator<=(const Iterator &iterator) const {
-    return offset <= iterator.offset;
+    return *current <= *iterator.current;
   }
 
  private:
   void advance(int offset) {
     this->offset += offset;
+    delete current;
+    current = new typename std::bitset<N>::reference(bitset[this->offset]);
   }
 
  protected:
+  typename std::bitset<N>::reference *current;
+  typename std::bitset<N>::reference *array;
   int offset;
-  bool value;
-  const std::bitset<N> &bitset;
+  std::bitset<N> &bitset;
 };
 
 template<size_t N>
