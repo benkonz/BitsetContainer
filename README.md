@@ -7,12 +7,13 @@ To use the code, clone the project and eiher include the include directory, or u
 ```c++
 #include <BitsetContainer/BitsetContainer.hpp>
 #include <algorithm>
+#include <iostream>
 
 //create a bitset with a size of 8 and a value of 0b00001111
 BitsetContainer<8> byte(0b00001111);
 
 //swap the right and left halves of the byte
-std::rotate(byte.begin(), byte.begin() + 4, byte.end());
+std::sort(byte.begin(), byte.end());
 
 //print: 00001111
 for(auto i : byte) {
