@@ -37,7 +37,7 @@ TEST(BitsetContainerTest, forwardIteratorTest) {
 }
 
 TEST(BitsetContainerTest, randomIteratorTest) {
-  BitsetContainer<8> bitsetContainer(0b00001111);
+  BitsetContainer<8> bitsetContainer("00001111");
 
   std::sort(bitsetContainer.begin(), bitsetContainer.end());
 

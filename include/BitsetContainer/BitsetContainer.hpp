@@ -31,8 +31,8 @@ class Iterator {
   }
 
   ~Iterator() {
-//    delete current;
-//    delete array;
+    delete current;
+    delete array;
   }
 
   Iterator &operator+=(difference_type offset) {
@@ -54,7 +54,7 @@ class Iterator {
   }
 
   reference operator[](difference_type offset) {
-//    delete array;
+    delete array;
     array = new typename std::bitset<N>::reference(bitset[this->offset + offset]);
     return *array;
   }
@@ -143,7 +143,7 @@ class BitsetContainer : public std::bitset<N> {
 
   }
 
-  explicit BitsetContainer(std::string string) : std::bitset<N>(string) {
+  explicit BitsetContainer(const std::string &string) : std::bitset<N>(string) {
 
   }
 
