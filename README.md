@@ -10,12 +10,12 @@ To use the code, clone the project and eiher include the include directory, or u
 #include <iostream>
 
 //create a bitset with a size of 8 and a value of 0b00001111
-BitsetContainer<8> byte(0b00001111);
+BitsetContainer<8> byte(0b01010101);
 
-//swap the right and left halves of the byte
+//sort the bits in the byte
 std::sort(byte.begin(), byte.end());
 
-//print: 00001111
+//print: 11110000
 for(auto i : byte) {
   std::cout << i;
 }
