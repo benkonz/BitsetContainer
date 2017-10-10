@@ -2,7 +2,6 @@
 #define BITSETCONTAINER_LIBRARY_H
 
 #include <bitset>
-#include <iostream>
 
 template<size_t N>
 class Iterator {
@@ -22,11 +21,23 @@ class Iterator {
 
   }
 
+  Iterator(const Iterator &iterator) : bitset(iterator.bitset), offset(iterator.offset) {
+    current = new typename std::bitset<N>::reference(*iterator.current);
+    array = new typename std::bitset<N>::reference(*iterator.array);
+  }
+
   Iterator &operator=(const Iterator &iterator) {
     bitset = iterator.bitset;
     offset = iterator.offset;
-    current = iterator.current;
-    array = iterator.array;
+
+    typename std::bitset<N>::reference *tmpCurrent = new typename std::bitset<N>::reference(*iterator.current);
+    delete current;
+    current = tmpCurrent;
+
+    typename std::bitset<N>::reference *tmpArray = new typename std::bitset<N>::reference(*iterator.array);
+    delete array;
+    array = tmpArray;
+
     return *this;
   }
 
@@ -59,7 +70,7 @@ class Iterator {
     return *array;
   }
 
-  Iterator<8> &operator++() {
+  Iterator &operator++() {
     advance(1);
     return *this;
   }

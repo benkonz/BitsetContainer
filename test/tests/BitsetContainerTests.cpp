@@ -42,8 +42,4 @@ TEST(BitsetContainerTest, randomIteratorTest) {
   std::sort(bitsetContainer.begin(), bitsetContainer.end());
 
   ASSERT_EQ(bitsetContainer.to_string(), "11110000");
-
-//  std::rotate(bitsetContainer.begin(), bitsetContainer.begin() + 4, bitsetContainer.end());
-//
-//  ASSERT_EQ(bitsetContainer.to_string(), "00001111");
 }
