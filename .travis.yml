@@ -34,4 +34,4 @@ script:
   - make install
 notifications:
   email: false
-sudo: true
+sudo: enabled
