@@ -30,11 +30,11 @@ class Iterator {
     bitset = iterator.bitset;
     offset = iterator.offset;
 
-    typename std::bitset<N>::reference *tmpCurrent = new typename std::bitset<N>::reference(*iterator.current);
+    auto tmpCurrent = new typename std::bitset<N>::reference(*iterator.current);
     delete current;
     current = tmpCurrent;
 
-    typename std::bitset<N>::reference *tmpArray = new typename std::bitset<N>::reference(*iterator.array);
+    auto tmpArray = new typename std::bitset<N>::reference(*iterator.array);
     delete array;
     array = tmpArray;
 

@@ -9,7 +9,7 @@ To use the code, clone the project and eiher include the include directory, or u
 #include <algorithm>
 #include <iostream>
 
-//create a bitset with a size of 8 and a value of 0b00001111
+//create a bitset with a size of 8 and a value of 01010101
 BitsetContainer<8> byte(0b01010101);
 
 //sort the bits in the byte
