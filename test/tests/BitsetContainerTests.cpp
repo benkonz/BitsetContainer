@@ -20,7 +20,7 @@ TEST(BitsetContainerTest, inputIteratorTest) {
 
   int sum = std::accumulate(bitsetContainer.begin(), bitsetContainer.end(), 0);
 
-  int product = std::accumulate(bitsetContainer.begin(), bitsetContainer.end(), 1, std::multiplies<>());
+  int product = std::accumulate(bitsetContainer.begin(), bitsetContainer.end(), 1, std::multiplies<int>());
 
   ASSERT_EQ(sum, 8);
   ASSERT_EQ(product, 1);
