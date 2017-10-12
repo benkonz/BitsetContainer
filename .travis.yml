@@ -2,10 +2,12 @@ language: cpp
 compiler: g++
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo add-apt-repository ppa:george-edison55/precise-backports --yes
   - sudo apt-get update -qq
 install:
   - sudo apt-get install -qq g++-4.9
   - export CXX="g++-4.9"
+  - sudo apt-get install cmake
 script:
   - mkdir build
   - cd build
