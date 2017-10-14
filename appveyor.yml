@@ -59,6 +59,7 @@ install:
     cmake -G "$env:generator" ..
     cmake --build .
     cmake --install .
+    cd ../../
 
 build_script:
 - ps: |
