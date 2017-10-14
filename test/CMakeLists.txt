@@ -1,12 +1,9 @@
-set(GOOGLE_TEST_SOURCE_DIR lib/googletest)
-
-add_subdirectory(${GOOGLE_TEST_SOURCE_DIR})
-include_directories(${GOOGLE_TEST_SOURCE_DIR}/googletest/include)
-include_directories(${GOOGLE_TEST_SOURCE_DIR}/googlemock/include)
+enable_testing()
+find_package(GTest REQUIRED)
 
 file(GLOB_RECURSE TEST_FILES tests/*.cpp)
 add_executable(runBitsetContainerTests main.cpp ${TEST_FILES})
 
-target_link_libraries(runBitsetContainerTests gtest gtest_main BitsetContainer)
+target_link_libraries(runBitsetContainerTests GTest::GTest GTest::Main BitsetContainer)
 
 add_test(UnitTests runBitsetContainerTests)

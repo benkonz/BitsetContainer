@@ -24,5 +24,4 @@ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(EXPORT BitsetContainerConfig DESTINATION share/BitsetContainer/cmake)
 export(TARGETS BitsetContainer FILE BitsetContainerConfig.cmake)
 
-enable_testing()
 add_subdirectory(test)
