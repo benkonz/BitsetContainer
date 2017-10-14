@@ -10,6 +10,7 @@ before_install:
   - cmake ..
   - make
   - sudo make install
+  - cd ../../
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
 addons:
