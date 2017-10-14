@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/bkonzUNOmaha/BitsetContainer.svg?branch=master)](https://travis-ci.org/bkonzUNOmaha/BitsetContainer)
+[![Build status](https://ci.appveyor.com/api/projects/status/48xibguq55kvf8ee?svg=true)](https://ci.appveyor.com/project/bkonzUNOmaha/bitsetcontainer)
 
 # BitsetContainer
 Single header only library that adds iterator functionality to the stl bitset class.
