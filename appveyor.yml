@@ -56,6 +56,7 @@ install:
     git clone https://github.com/google/googletest.git
     cd googletest
     md build
+    cd build
     cmake -G "$env:generator" ..
     cmake --build .
     cmake --install .
