@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bkonzUNOmaha/BitsetContainer.svg?branch=master)](https://travis-ci.org/bkonzUNOmaha/BitsetContainer)
+
 # BitsetContainer
 Single header only library that adds iterator functionality to the stl bitset class.
 The code is written in C++14 with no dependencies.
