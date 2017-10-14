@@ -58,6 +58,7 @@ build_script:
     md build
     cd build
     cmake -G "$env:generator" ..
+    cmake --build .
 
 test_script:
 - ps: |
