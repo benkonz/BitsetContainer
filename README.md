@@ -1,12 +1,12 @@
 [![Build Status](https://travis-ci.org/bkonzUNOmaha/BitsetContainer.svg?branch=master)](https://travis-ci.org/bkonzUNOmaha/BitsetContainer)
 [![Build status](https://ci.appveyor.com/api/projects/status/48xibguq55kvf8ee?svg=true)](https://ci.appveyor.com/project/bkonzUNOmaha/bitsetcontainer)
 
-# BitsetContainer
+#BitsetContainer
 Single header only library that adds iterator functionality to the stl bitset class.
 The code is written in C++14 with no dependencies.
 To use the code, clone the project and eiher include the include directory, or use cmake to  install the project
 
-## Example
+##Example
 ```c++
 #include <BitsetContainer/BitsetContainer.hpp>
 #include <algorithm>
@@ -25,7 +25,7 @@ for(auto i : byte) {
 std::cout << std::endl; 
 ```
 
-## Installation and Testing
+##Installation and Testing
 BitsetContainer uses CMake 3.8 as a build system and I've tested the code on gcc, clang, msvc, and mingw. All test cases are written with Google Test.
 
 ```
@@ -44,8 +44,8 @@ add_executable(TestProject ${SOURCE_FILES})
 target_link_libraries(TestProject BitsetContainer)
 ```
 
-## Details
+##Details
 The header file is broken up into two classes, the BitsetIterator and the BitsetContainer. BitsetIterator is a [random access iterator](http://en.cppreference.com/w/cpp/concept/RandomAccessIterator) that defines all of the random access iterator operation overloads and uses a bool as a value type. The BitsetContainer class extends the std::bitset class and it defines the begin() and end() functions that return a BitsetIterator that points to the beggining and one element after the end of the Bitset.
 
-## License
+##License
 This library uses the [GNU Genreal Public Licence](https://www.gnu.org/licenses/gpl-3.0.en.html)
