@@ -2,6 +2,7 @@
 #define BITSETCONTAINER_LIBRARY_H
 
 #include <bitset>
+#include <memory>
 
 template<size_t N>
 class Iterator {
@@ -10,40 +11,13 @@ class Iterator {
   using difference_type = std::ptrdiff_t;
   using value_type = bool;
   using reference = typename std::bitset<N>::reference &;
-  using pointer = typename std::bitset<N>::reference *;
+  using pointer = std::shared_ptr<typename std::bitset<N>::reference>;
   using iterator_category = std::random_access_iterator_tag;
 
-  explicit Iterator(std::bitset<N> &bitset, int offset = 0)
-      : bitset(bitset),
+  explicit Iterator(std::bitset<N> *bitsetPtr, int offset = 0)
+      : bitsetPtr(bitsetPtr),
         offset(offset),
-        current(new typename std::bitset<N>::reference(bitset[offset])),
-        array(new typename std::bitset<N>::reference(bitset[offset])) {
-
-  }
-
-  Iterator(const Iterator &iterator) : bitset(iterator.bitset), offset(iterator.offset) {
-    current = new typename std::bitset<N>::reference(*iterator.current);
-    array = new typename std::bitset<N>::reference(*iterator.array);
-  }
-
-  Iterator &operator=(const Iterator &iterator) {
-    bitset = iterator.bitset;
-    offset = iterator.offset;
-
-    auto tmpCurrent = new typename std::bitset<N>::reference(*iterator.current);
-    delete current;
-    current = tmpCurrent;
-
-    auto tmpArray = new typename std::bitset<N>::reference(*iterator.array);
-    delete array;
-    array = tmpArray;
-
-    return *this;
-  }
-
-  ~Iterator() {
-    delete current;
-    delete array;
+        current(new typename std::bitset<N>::reference(bitsetPtr->operator[](offset))) {
   }
 
   Iterator &operator+=(difference_type offset) {
@@ -65,28 +39,27 @@ class Iterator {
   }
 
   reference operator[](difference_type offset) {
-    delete array;
-    array = new typename std::bitset<N>::reference(bitset[this->offset + offset]);
+    array.reset(new typename std::bitset<N>::reference(bitsetPtr->operator[](this->offset + offset)));
     return *array;
   }
 
-  Iterator &operator++() {
+  Iterator<N> &operator++() {
     advance(1);
     return *this;
   }
 
-  Iterator &operator--() {
+  Iterator<N> &operator--() {
     advance(-1);
     return *this;
   }
 
-  Iterator operator++(int) {
+  Iterator<N> operator++(int) {
     Iterator tmp = *this;
     advance(1);
     return tmp;
   }
 
-  Iterator operator--(int) {
+  Iterator<N> operator--(int) {
     Iterator tmp(*this);
     advance(-1);
     return tmp;
@@ -96,12 +69,12 @@ class Iterator {
     return offset - iterator.offset;
   }
 
-  Iterator operator-(const difference_type offset) const {
-    return Iterator(bitset, this->offset - offset);
+  Iterator<N> operator-(const difference_type offset) const {
+    return Iterator(bitsetPtr, this->offset - offset);
   }
 
-  Iterator operator+(difference_type offset) const {
-    return Iterator(bitset, this->offset + offset);
+  Iterator<N> operator+(difference_type offset) const {
+    return Iterator(bitsetPtr, this->offset + offset);
   }
 
   bool operator==(const Iterator &iterator) const {
@@ -113,33 +86,32 @@ class Iterator {
   }
 
   bool operator>(const Iterator &iterator) const {
-    return *current > *iterator.current;
+    return *current > *(iterator.current);
   }
 
   bool operator<(const Iterator &iterator) const {
-    return *current < *iterator.current;
+    return *current < *(iterator.current);
   }
 
   bool operator>=(const Iterator &iterator) const {
-    return *current >= *iterator.current;
+    return *current >= *(iterator.current);
   }
 
   bool operator<=(const Iterator &iterator) const {
-    return *current <= *iterator.current;
+    return *current <= *(iterator.current);
   }
 
  private:
   void advance(int offset) {
     this->offset += offset;
-    delete current;
-    current = new typename std::bitset<N>::reference(bitset[this->offset]);
+    current.reset(new typename std::bitset<N>::reference(bitsetPtr->operator[](this->offset)));
   }
 
  protected:
-  typename std::bitset<N>::reference *current;
-  typename std::bitset<N>::reference *array;
+  std::shared_ptr<typename std::bitset<N>::reference> current;
+  std::shared_ptr<typename std::bitset<N>::reference> array;
   int offset;
-  std::bitset<N> &bitset;
+  std::bitset<N> *bitsetPtr;
 };
 
 template<size_t N>
@@ -159,11 +131,11 @@ class BitsetContainer : public std::bitset<N> {
   }
 
   Iterator<N> begin() {
-    return Iterator<N>(*this, 0);
+    return Iterator<N>(this, 0);
   }
 
   Iterator<N> end() {
-    return Iterator<N>(*this, N);
+    return Iterator<N>(this, N);
   }
 };
 

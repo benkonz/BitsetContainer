@@ -58,8 +58,8 @@ install:
     md build
     cd build
     cmake -G "$env:generator" ..
-    cmake --build .
-    cmake --install .
+    devenv /build googletest-distribution.sln /project ALL_BUILD.vcxproj
+    devenv /build googletest-distribution.sln /project INSTALL.vcxproj
     cd ../../
 
 build_script:

@@ -3,10 +3,9 @@
 #include <numeric>
 
 TEST(BitsetContainerTest, basicConstruct) {
-  const int bits = 0b11111111;
+  const int bits = 0b01010101;
   BitsetContainer<8> bitsetContainer(bits);
   std::bitset<8> bitset(bits);
-
 
   int i = 0;
   for (auto bit : bitsetContainer) {

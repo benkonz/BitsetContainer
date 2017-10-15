@@ -2,7 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/48xibguq55kvf8ee?svg=true)](https://ci.appveyor.com/project/bkonzUNOmaha/bitsetcontainer)
 
 #BitsetContainer
-Single header only library that adds iterator functionality to the stl bitset class.
+Single header only library that adds iterator functionality to the stl bitsetPtr class.
 The code is written in C++14 with no dependencies.
 To use the code, clone the project and eiher include the include directory, or use cmake to  install the project
 
@@ -12,7 +12,7 @@ To use the code, clone the project and eiher include the include directory, or u
 #include <algorithm>
 #include <iostream>
 
-//create a bitset with a size of 8 and a value of 01010101
+//create a bitsetPtr with a size of 8 and a value of 01010101
 BitsetContainer<8> byte(0b01010101);
 
 //sort the bits in the byte
@@ -45,7 +45,7 @@ target_link_libraries(TestProject BitsetContainer)
 ```
 
 ##Details
-The header file is broken up into two classes, the BitsetIterator and the BitsetContainer. BitsetIterator is a [random access iterator](http://en.cppreference.com/w/cpp/concept/RandomAccessIterator) that defines all of the random access iterator operation overloads and uses a bool as a value type. The BitsetContainer class extends the std::bitset class and it defines the begin() and end() functions that return a BitsetIterator that points to the beggining and one element after the end of the Bitset.
+The header file is broken up into two classes, the BitsetIterator and the BitsetContainer. BitsetIterator is a [random access iterator](http://en.cppreference.com/w/cpp/concept/RandomAccessIterator) that defines all of the random access iterator operation overloads and uses a bool as a value type. The BitsetContainer class extends the std::bitsetPtr class and it defines the begin() and end() functions that return a BitsetIterator that points to the beggining and one element after the end of the Bitset.
 
 ##License
 This library uses the [GNU Genreal Public Licence](https://www.gnu.org/licenses/gpl-3.0.en.html)
