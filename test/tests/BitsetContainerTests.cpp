@@ -42,3 +42,17 @@ TEST(BitsetContainerTest, randomIteratorTest) {
 
   ASSERT_EQ(bitsetContainer.to_string(), "11110000");
 }
+
+TEST(BitsetContainerTest, rotationTest) {
+  BitsetContainer<8> leftRotation("01111111");
+
+  std::rotate(leftRotation.rbegin(), leftRotation.rbegin() + 1, leftRotation.rend());
+
+  ASSERT_EQ(leftRotation.to_string(), "11111110");
+
+  BitsetContainer<8> rightRotation("01111111");
+
+  std::rotate(rightRotation.begin(), rightRotation.begin() + 1, rightRotation.end());
+
+  ASSERT_EQ(rightRotation.to_string(), "10111111");
+}

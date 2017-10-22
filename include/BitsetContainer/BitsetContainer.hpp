@@ -118,6 +118,9 @@ template<size_t N>
 class BitsetContainer : public std::bitset<N> {
  public:
 
+  using iterator = Iterator<N>;
+  using reverse_iterator = std::reverse_iterator<iterator>;
+
   BitsetContainer() : std::bitset<N>() {
 
   }
@@ -130,13 +133,22 @@ class BitsetContainer : public std::bitset<N> {
 
   }
 
-  Iterator<N> begin() {
+  iterator begin() {
     return Iterator<N>(this, 0);
   }
 
-  Iterator<N> end() {
+  iterator end() {
     return Iterator<N>(this, N);
   }
+
+  reverse_iterator rbegin() {
+    return reverse_iterator(end());
+  }
+
+  reverse_iterator rend() {
+    return reverse_iterator(begin());
+  }
+
 };
 
 #endif
