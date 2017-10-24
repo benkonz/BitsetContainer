@@ -22,7 +22,7 @@ before_build:
 
     mkdir build && cd build
 
-    cmake .. -DGTEST_LIBRARY="C:\Program Files (x86)\googletest-distribution\lib\libgtest.a" -DGTEST_MAIN_LIBRARY="C:\Program Files (x86)\googletest-distribution\lib\libgtest_main.a" -DGTEST_INCLUDE_DIR="C:\Program Files (x86)\googletest-distribution\include"
+    cmake .. -DGTEST_LIBRARY="C:\Program Files (x86)\googletest-distribution\lib\gtestd.lib" -DGTEST_MAIN_LIBRARY="C:\Program Files (x86)\googletest-distribution\lib\gtest_maind.lib" -DGTEST_INCLUDE_DIR="C:\Program Files (x86)\googletest-distribution\include"
 build:
   project: build/BitsetContainer.sln
   parallel: true
