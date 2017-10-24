@@ -4,10 +4,10 @@ image:
 - Visual Studio 2017
 - Visual Studio 2013
 init:
-- cmd: git clone https://github.com/google/googletest.git
+- cmd: git clone https://github.com/google/googletest.git C:\projects\googletest
 install:
 - cmd: >-
-    cd googletest
+    cd C:\projects\googletest
 
     mkdir build && cd build
 
@@ -17,7 +17,7 @@ install:
 
     msbuild INSTALL.vcxproj
 
-    cd ../../
+    cd C:\projects\bitsetcontainer
 
     mkdir build && cd build
 
