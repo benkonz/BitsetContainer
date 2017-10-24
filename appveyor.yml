@@ -16,14 +16,15 @@ install:
     msbuild googletest-distribution.sln
 
     msbuild INSTALL.vcxproj
-
+before_build:
+- cmd: >-
     cd C:\projects\bitsetcontainer
 
     mkdir build && cd build
 
     cmake .. -DGTEST_LIBRARY="C:\Program Files (x86)\googletest-distribution\lib\libgtest.a" -DGTEST_MAIN_LIBRARY="C:\Program Files (x86)\googletest-distribution\lib\libgtest_main.a" -DGTEST_INCLUDE_DIR="C:\Program Files (x86)\googletest-distribution\include"
 build:
-  project: BitsetContainer.sln
+  project: build/BitsetContainer.sln
   parallel: true
   verbosity: minimal
 notifications:
