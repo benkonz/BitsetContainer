@@ -1,74 +1,35 @@
-version: '{build}'
-
-os: Visual Studio 2015
-
-environment:
-  matrix:
-    - compiler: msvc-14-seh
-      generator: "Visual Studio 14 2015"
-
-    - compiler: msvc-14-seh
-      generator: "Visual Studio 14 2015 Win64"
-
-    - compiler: msvc-12-seh
-      generator: "Visual Studio 12 2013"
-
-    - compiler: msvc-12-seh
-      generator: "Visual Studio 12 2013 Win64"
-
-    - compiler: msvc-11-seh
-      generator: "Visual Studio 11 2012"
-
-    - compiler: msvc-11-seh
-      generator: "Visual Studio 11 2012 Win64"
-
-    - compiler: msvc-10-seh
-      generator: "Visual Studio 10 2010"
-
-    - compiler: gcc-5.3.0-posix
-      generator: "MinGW Makefiles"
-      cxx_path: 'C:\mingw-w64\i686-5.3.0-posix-dwarf-rt_v4-rev0\mingw32\bin'
-
-    - compiler: gcc-6.3.0-posix
-      generator: "MinGW Makefiles"
-      cxx_path: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
-configuration:
-  - Debug
-  #- Release
-
-build:
-  verbosity: minimal
-
+version: 1.0.{build}
+image:
+- Visual Studio 2015
+- Visual Studio 2017
+- Visual Studio 2013
+init:
+- cmd: git clone https://github.com/google/googletest.git
 install:
-- ps: |
-    Write-Output "Compiler: $env:compiler"
-    Write-Output "Generator: $env:generator"
-
-    # git bash conflicts with MinGW makefiles
-    if ($env:generator -eq "MinGW Makefiles") {
-        $env:path = $env:path.replace("C:\Program Files\Git\usr\bin;", "")
-        if ($env:cxx_path -ne "") {
-            $env:path += ";$env:cxx_path"
-        }
-    }
-
-    git clone https://github.com/google/googletest.git
+- cmd: >-
     cd googletest
-    md build
-    cd build
-    cmake -G "$env:generator" ..
-    devenv /build googletest-distribution.sln /project ALL_BUILD.vcxproj
-    devenv /build googletest-distribution.sln /project INSTALL.vcxproj
+
+    mkdir build && cd build
+
+    cmake ..
+
+    msbuild googletest-distribution.sln
+
+    msbuild INSTALL.vcxproj
+
     cd ../../
 
-build_script:
-- ps: |
-    md build
-    cd build
-    cmake -G "$env:generator" ..
-    cmake --build .
+    mkdir build && cd build
 
-test_script:
-- ps: |
-    ctest
+    cmake ..
+build:
+  project: BitsetContainer.sln
+  parallel: true
+  verbosity: minimal
+notifications:
+- provider: Email
+  to:
+  - bkonz@unomaha.edu
+  on_build_success: true
+  on_build_failure: false
+  on_build_status_changed: false
