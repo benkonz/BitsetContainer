@@ -1,5 +1,4 @@
-[![Build Status](https://api.travis-ci.org/benkonz/BitsetContainer.svg?branch=master)
-[![Build status](https://ci.appveyor.com/api/projects/status/48xibguq55kvf8ee?svg=true)](https://ci.appveyor.com/project/bkonzUNOmaha/bitsetcontainer)
+![Build Status](https://api.travis-ci.org/benkonz/BitsetContainer.svg?branch=master)
 
 # BitsetContainer
 Single header only library that adds iterator functionality to the stl bitsetPtr class.
